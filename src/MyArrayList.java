@@ -8,11 +8,32 @@ public MyArrayList() {
     this.elements = new Object[10];
     this.size = 0;
 }
+private void increaseBuffer() {
+    Object[] newElements = new Object[elements.length * 2];
+    for(int i = 0; i < size; i++) {
+        newElements[i] = elements[i];
+    }
+     elements = newElements;
+}
+private void ensureCapacity() {
+    if (size == elements.length) {
+        Object[] newElements = new Object[elements.length * 2];
+        for (int j = 0; j < size; j++) {
+            newElements[j] = elements[j];
+        }
+         elements = newElements;
+    }
+
+}
 
     @Override
     public void add(T item) {
-
+    if (size == elements.length) {
+        increaseBuffer();
     }
+     elements[size++] = item;
+}
+
 
     @Override
     public void set(int index, T item) {
@@ -26,27 +47,35 @@ public MyArrayList() {
 
     @Override
     public void addFirst(T item) {
-
+    ensureCapacity();
+    for(int i = size; i > 0; i--) {
+        elements[i] = elements[i - 1];
+    }
+    elements[0] = item;
+    size++;
     }
 
     @Override
     public void addLast(T item) {
-
+     add(item);
     }
 
     @Override
     public T get(int index) {
-        return null;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index " + index + "Size " + size);
+        }
+        return (T) elements[index];
     }
 
     @Override
     public T getFirst() {
-        return null;
+         return null;
     }
 
     @Override
     public T getLast() {
-        return null;
+        getLast();
     }
 
     @Override
@@ -91,12 +120,13 @@ public MyArrayList() {
 
     @Override
     public void clear() {
-
-    }
+        this.elements = new Object[10];
+        this.size = 0;
+}
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
