@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MyArrayList<T> implements MyList<T> {
 private Object[] elements;
@@ -37,12 +38,23 @@ private void ensureCapacity() {
 
     @Override
     public void set(int index, T item) {
-
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        elements[index] = item;
     }
 
     @Override
     public void add(int index, T item) {
-
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        ensureCapacity();
+        for (int i = size; i > index; i--) {
+            elements[i] = elements[i - 1];
+        }
+        elements[index] = item;
+        size++;
     }
 
     @Override
@@ -70,52 +82,86 @@ private void ensureCapacity() {
 
     @Override
     public T getFirst() {
-         return null;
+        if (size == 0) throw new NoSuchElementException("Пуста");
+        return get(0);
     }
 
     @Override
     public T getLast() {
-        getLast();
+        if (size == 0)
+            throw new NoSuchElementException("Пуста");
+        return get(size - 1);
     }
-
     @Override
     public void remove(int index) {
-
+    if (index < 0 || index >= size) {
+        throw new IndexOutOfBoundsException("index" + index + "Size" + size);
     }
+    for (int i = index; i < size - 1; i++) {
+        elements[i] = elements[i + 1];
+    }
+    elements[--size] = null;
+
+}
 
     @Override
     public void removeFirst() {
-
+     remove(0);
     }
 
     @Override
     public void removeLast() {
-
+     if (size == 0)
+         throw new NoSuchElementException("Пуста");
+     elements[size--] = null;
     }
 
     @Override
     public void sort() {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+           if(((Comparable<T>) elements[j]).compareTo((T) elements[j + 1]) > 0) {
+               Object temp = elements[j];
+               elements[j] = elements[j + 1];
+               elements[j + 1] = temp;
 
+           }
+        }
+    }
     }
 
     @Override
-    public int indexOf(Object object) {
-        return 0;
+    public int indexOf(Object item) {
+        for (int i = 0; i < size; i++) {
+            if(elements[i].equals(item)) {
+               return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    public int lastIndexOf(Object object) {
-        return 0;
+    public int lastIndexOf(Object item) {
+        for (int i = size - 1; i >= 0; i--) {
+            if(elements[i].equals(item)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    public boolean exists(Object object) {
-        return false;
+    public boolean exists(Object item) {
+        return indexOf(item) != -1;
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+     Object[] result = new Object[size];
+     for (int i = 0; i< size; i++) {
+         result[i] = elements[i];
+     }
+     return result;
     }
 
     @Override
@@ -126,7 +172,7 @@ private void ensureCapacity() {
 
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     @Override
