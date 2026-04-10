@@ -36,15 +36,24 @@ public class Main {
 //        System.out.println(list.indexOf("bmw"));
 //        System.out.println(list.lastIndexOf("lada"));
 //        System.out.println(list.exists("lexus"));
-        list.add("C");
-        list.add("A");
-        list.add("B");
+//        list.add("C");
+//        list.add("A");
+//        list.add("B");
+//
+//        System.out.println("До: " + list.get(0) + list.get(1) + list.get(2));
+//
+//        list.sort();
+//
+//        System.out.println("После: " + list.get(0) + list.get(1) + list.get(2));
+        MyList<String> linkedList = new MyLinkedList<>();
 
-        System.out.println("До: " + list.get(0) + list.get(1) + list.get(2));
-
-        list.sort();
-
-        System.out.println("После: " + list.get(0) + list.get(1) + list.get(2));
+        linkedList.add("BMW");
+        linkedList.add("Lexus");
+        linkedList.add("Lada");
+        System.out.println("Размер: " + linkedList.size());
+        System.out.println("первый: " + linkedList.get(0));
+        linkedList.remove(1);
+        System.out.println("кто второй: " + linkedList.get(1));
 
 
 

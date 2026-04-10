@@ -1,29 +1,38 @@
 import java.util.Iterator;
 
 public class MyLinkedList<T> implements MyList<T> {
-    private Node first; // Ссылка на самый первый элемент
-    private Node last;  // Ссылка на самый последний элемент
-    private int size = 0;
-
-    public class Node<T> {
-        T item;      // Сами данные
-        Node<T> next; // Ссылка на следующий узел
-        Node<T> prev; // Ссылка на предыдущий узел
-
-        public Node(Node<T> prev, T item, Node<T> next) {
-            this.prev = prev;
-            this.item = item;
-            this.next = next;
+    private static class MyNode<T> {
+        T data;
+        MyNode<T> next;
+        MyNode(T data) {
+            this.data = data;
         }
     }
+
+    private MyNode<T> head;
+    private MyNode<T> tail;
+    private int length;
     @Override
     public void add(T item) {
+      MyNode<T> newNode = new MyNode<>(item);
+        if (head == null) {
+          head = tail = new MyNode<>(item);
 
+      } else {
+            tail.next = newNode;
+            tail = newNode;
+            }
+        length++;
     }
 
     @Override
     public void set(int index, T item) {
-
+        if (index < 0 || index >= length) return;
+        MyNode<T> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        current.data = item;
     }
 
     @Override
@@ -38,27 +47,51 @@ public class MyLinkedList<T> implements MyList<T> {
 
     @Override
     public void addLast(T item) {
-
+     addLast(item);
     }
 
     @Override
     public T get(int index) {
-        return null;
+        MyNode<T> current = head;
+        for (int i = 0; i < index; i++) {
+           current = current.next;
+        }
+        return current.data;
     }
 
     @Override
     public T getFirst() {
-        return null;
+        if (head == null) {
+            return null;
+        }
+        return head.data;
     }
 
     @Override
     public T getLast() {
-        return null;
+        if (tail == null) {
+            return null;
+        }
+        return tail.data;
     }
 
     @Override
     public void remove(int index) {
-
+      if ( index < 0 || index >= length) return;
+      if (index == 0) {
+          head = head.next;
+          if (head == null) tail = null;
+      } else {
+          MyNode<T> prev = head;
+          for (int i = 0; i < index - 1; i++) {
+              prev = prev.next;
+          }
+          prev.next = prev.next.next;
+          if ( length == length - 1) {
+              tail = prev;
+          }
+      }
+      length--;
     }
 
     @Override
@@ -103,7 +136,7 @@ public class MyLinkedList<T> implements MyList<T> {
 
     @Override
     public int size() {
-        return 0;
+        return length;
     }
 
     @Override
